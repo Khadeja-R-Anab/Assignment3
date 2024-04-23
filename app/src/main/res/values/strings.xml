@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Assignment3</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password_visibility_toggle">Password Visibility Toggle</string>
+    <string name="lets_create_an_account">Lets Create an Account</string>
+    <string name="choose_a_username">Choose A Username</string>
+    <string name="choose_a_password">Choose A Password</string>
+    <string name="confirm_your_password">Confirm Your Password</string>
+    <string name="passwords_do_not_match">* Passwords do not match</string>
+    <string name="exit">Exit</string>
+    <string name="already_have_an_account">Already have an Account?</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="add_data">Add Data</string>
+    <string name="my_vault">My Vault</string>
+    <string name="lock">Lock</string>
+    <string name="u">U</string>
+    <string name="search">Search</string>
+    <string name="more">More</string>
+    <string name="types">Types</string>
+    <string name="_4">4</string>
+    <string name="_0">0</string>
+    <string name="card">Card</string>
+    <string name="secure_notes">Secure Notes</string>
+    <string name="identity">Identity</string>
+    <string name="no_folder">No Folder</string>
+    <string name="_1">1</string>
+    <string name="bin">Bin</string>
+</resources>
