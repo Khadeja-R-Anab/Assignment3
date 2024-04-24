@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Assignment3"
         tools:targetApi="31">
         <activity
+            android:name=".EditInfo"
+            android:exported="false" />
+        <activity
+            android:name=".AddInfo"
+            android:exported="false" />
+        <activity
+            android:name=".VaultBin"
+            android:exported="false" />
+        <activity
+            android:name=".VaultLogins"
+            android:exported="false" />
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity
