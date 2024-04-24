@@ -11,9 +11,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class VaultLogins extends AppCompatActivity {
 
     ImageButton btnBack;
+    FloatingActionButton fabAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +31,16 @@ public class VaultLogins extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+
+        fabAdd.setOnClickListener(view -> {
+            Intent intent = new Intent(VaultLogins.this, AddInfo.class);
+            startActivity(intent);
+        });
     }
     private void init()
     {
         btnBack = findViewById(R.id.btnBack);
+        fabAdd = findViewById(R.id.fabAdd);
     }
 }

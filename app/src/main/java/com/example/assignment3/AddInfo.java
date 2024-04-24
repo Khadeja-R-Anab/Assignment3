@@ -1,6 +1,7 @@
 package com.example.assignment3;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,15 +11,25 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class AddInfo extends AppCompatActivity {
 
+    TextView tvAdd, tvCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_info);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        init ();
+
+        tvCancel.setOnClickListener(view -> {
+            finish();
         });
+
+        tvAdd.setOnClickListener(view-> {
+            finish();
+        });
+    }
+
+    private void init(){
+        tvAdd = findViewById(R.id.tvAdd);
+        tvCancel = findViewById(R.id.tvCancel);
     }
 }

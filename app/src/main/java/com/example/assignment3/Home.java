@@ -13,11 +13,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Objects;
 
 public class Home extends AppCompatActivity {
 
     LinearLayout llLogin, llBin;
+    FloatingActionButton fabAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +41,16 @@ public class Home extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        fabAdd.setOnClickListener(view -> {
+            Intent intent = new Intent(Home.this, AddInfo.class);
+            startActivity(intent);
+        });
     }
     private void init()
     {
         llLogin = findViewById(R.id.llLogin);
         llBin = findViewById(R.id.llBin);
+        fabAdd = findViewById(R.id.fabAdd);
     }
 }

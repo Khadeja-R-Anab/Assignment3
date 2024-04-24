@@ -36,4 +36,8 @@
     <string name="folders">Folders</string>
     <string name="back_arrow">Back arrow</string>
     <string name="there_are_no_items_in_the_bin">There are no items in the bin.</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="items">Items</string>
 </resources>
