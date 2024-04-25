@@ -72,6 +72,12 @@
                 android:textColor="@color/white"
                 android:text="@string/there_are_no_items_in_the_bin"
                 android:gravity="center"/>
+<!--                android:visibility="gone"/>-->
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@android:id/list"/>
 
     </LinearLayout>
 

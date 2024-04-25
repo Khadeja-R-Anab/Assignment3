@@ -82,19 +82,11 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="UserName"
                 android:textColorHint="#939393"
                 android:layout_margin="5dp"
-                android:paddingVertical="20dp"/>
-
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username"
-                android:textColorHint="#939393"
-                android:layout_margin="5dp"
-                android:paddingVertical="20dp"/>
+                android:paddingVertical="20dp"
+                android:id="@+id/etUsername"/>
 
 
             <EditText
@@ -103,7 +95,18 @@
                 android:hint="Password"
                 android:textColorHint="#939393"
                 android:layout_margin="5dp"
-                android:paddingVertical="20dp"/>
+                android:paddingVertical="20dp"
+                android:id="@+id/etPassword"/>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="URL"
+                android:textColorHint="#939393"
+                android:layout_margin="5dp"
+                android:paddingVertical="20dp"
+                android:id="@+id/etUrl"/>
         </LinearLayout>
 
     </LinearLayout>
