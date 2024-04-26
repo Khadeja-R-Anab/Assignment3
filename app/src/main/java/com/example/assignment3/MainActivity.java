@@ -3,27 +3,18 @@ package com.example.assignment3;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
@@ -42,163 +33,82 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnTogglePassword, btnToggleConfirmPassword;
     RelativeLayout rlConfirm;
 
+    ItemsDB itemsDB; // Database helper
+    SharedPreferences sPref; // Shared preferences for storing login data
 
     Fragment LoginFragment, SignUpFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
 
-        SharedPreferences sPref = getSharedPreferences("Login", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sPref.edit();
-        SharedPreferences.Editor editor1 = sPref.edit();
+        itemsDB = new ItemsDB(this);
+        sPref = getSharedPreferences("Login", MODE_PRIVATE);
 
-
-        boolean flag = sPref.getBoolean("isLogin", false);
-        if(flag)
-        {
-            Intent intent = new Intent(MainActivity.this,
-                    Home.class);
-            startActivity(intent);
-            finish();
+        boolean isLoggedIn = sPref.getBoolean("isLoggedIn", false);
+        if(isLoggedIn) {
+            startHomeActivity();
+            return;
         }
 
-        btnToggleLoginPassword.setOnClickListener(v -> {
-            int selection = etLoginPassword.getSelectionEnd();
+        // Login button click listener
+        btnLogin.setOnClickListener(view -> {
+            String username = etLoginUsername.getText().toString();
+            String password = etLoginPassword.getText().toString();
 
-            if (etLoginPassword.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                etLoginPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                btnToggleLoginPassword.setImageResource(R.drawable.visibility_off_24px);
+            if(validateLogin(username, password)) {
+                saveLoginState(username); // Save login state
+                startHomeActivity(); // Open home activity
             } else {
-                etLoginPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                btnToggleLoginPassword.setImageResource(R.drawable.visibility_24px);
+                Toast.makeText(MainActivity.this, "Incorrect Username or Password", Toast.LENGTH_SHORT).show();
             }
-
-            // Restore cursor position
-            etLoginPassword.setSelection(selection);
         });
 
-        btnTogglePassword.setOnClickListener(v -> {
-            int selection = etSignUpPassword.getSelectionEnd();
-
-            if (etSignUpPassword.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                etSignUpPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                btnTogglePassword.setImageResource(R.drawable.visibility_off_24px);
-            } else {
-                etSignUpPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                btnTogglePassword.setImageResource(R.drawable.visibility_24px);
-            }
-
-            // Restore cursor position
-            etSignUpPassword.setSelection(selection);
-        });
-
-        btnToggleConfirmPassword.setOnClickListener(v -> {
-            int selection = etSConfirmPassword.getSelectionEnd();
-
-            if (etSConfirmPassword.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                etSConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                btnToggleConfirmPassword.setImageResource(R.drawable.visibility_off_24px);
-            } else {
-                etSConfirmPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                btnToggleConfirmPassword.setImageResource(R.drawable.visibility_24px);
-            }
-
-            // Restore cursor position
-            etSConfirmPassword.setSelection(selection);
-        });
-
+        // SignUp button click listener
         btnLSignUp.setOnClickListener(view -> manager.beginTransaction()
                 .hide(LoginFragment)
                 .show(SignUpFragment)
                 .commit());
 
+        // Sign in from signup fragment
         btnSLogin.setOnClickListener(view -> manager.beginTransaction()
                 .show(LoginFragment)
                 .hide(SignUpFragment)
                 .commit());
 
-        etSConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not needed
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Not needed
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String confirmPassword = s.toString();
-                String originalPassword = Objects.requireNonNull(etSignUpPassword.getText()).toString(); // Assuming etPassword is your original password field
-                if (!confirmPassword.equals(originalPassword)) {
-                    // Passwords don't match, show error message
-                    passwordMismatchError.setVisibility(View.VISIBLE);
-                    rlConfirm.setBackgroundResource(R.drawable.edit_text_border_error); // Set error border color
-                } else {
-                    // Passwords match, hide error message
-                    passwordMismatchError.setVisibility(View.GONE);
-                    rlConfirm.setBackgroundResource(R.drawable.edit_text_border);
-                }
-            }
-        });
-
+        // SignUp button click listener
         btnSignUp.setOnClickListener(view -> {
-            String Pass = Objects.requireNonNull(etSignUpPassword.getText()).toString();
-            String ConfirmPass = Objects.requireNonNull(etSConfirmPassword.getText()).toString();
-            String SUsername = Objects.requireNonNull(etSignUpUsername.getText()).toString();
-            if (!(Pass.isEmpty()) && !(ConfirmPass.isEmpty()) && !(SUsername.isEmpty())) {
-                if(Pass.equals(ConfirmPass))
-                {
-                    editor.putString("username", Objects.requireNonNull(etSignUpUsername.getText()).toString());
-                    editor.putString("password", Objects.requireNonNull(etSignUpPassword.getText()).toString());
-                    editor.apply();
+            String username = etSignUpUsername.getText().toString();
+            String password = etSignUpPassword.getText().toString();
+            String confirmPassword = etSConfirmPassword.getText().toString();
 
-                    Toast.makeText(MainActivity.this, "User Created", Toast.LENGTH_SHORT).show();
-
-                    editor1.putBoolean("isLogin", true);
-                    editor1.apply();
-
-                    Intent intent = new Intent(MainActivity.this, Home.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-            else {
+            if(username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(MainActivity.this, "Fill all fields", Toast.LENGTH_SHORT).show();
+            } else if(!password.equals(confirmPassword)) {
+                passwordMismatchError.setVisibility(View.VISIBLE);
+                rlConfirm.setBackgroundResource(R.drawable.edit_text_border_error);
+            } else {
+                registerUser(username, password);
+                manager.beginTransaction()
+                        .show(LoginFragment)
+                        .hide(SignUpFragment)
+                        .commit();
             }
         });
 
+        // Toggle visibility
+        btnToggleLoginPassword.setOnClickListener(v -> togglePasswordVisibility(etLoginPassword));
+        btnTogglePassword.setOnClickListener(v -> togglePasswordVisibility(etSignUpPassword));
+        btnToggleConfirmPassword.setOnClickListener(v -> togglePasswordVisibility(etSConfirmPassword));
+
+        // Exit button click listeners
         btnLExit.setOnClickListener(v -> finish());
         btnSExit.setOnClickListener(v -> finish());
-
-        btnLogin.setOnClickListener(view -> {
-            String email = sPref.getString("email", null);
-            String password = sPref.getString("password", null);
-            if(Objects.requireNonNull(etLoginPassword.getText()).toString().equals(email)
-                    && Objects.requireNonNull(etLoginPassword.getText()).toString().equals(password))
-            {
-                editor1.putBoolean("isLogin", true);
-                editor1.apply();
-
-                Intent intent = new Intent(MainActivity.this, Home.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(MainActivity.this, "Incorrect Username or Password", Toast.LENGTH_SHORT).show();
-            }
-
-        });
-
     }
 
-    private void init()
-    {
+    private void init() {
         manager = getSupportFragmentManager();
 
         loginView = Objects.requireNonNull(manager.findFragmentById(R.id.fragLogin)).requireView();
@@ -222,5 +132,52 @@ public class MainActivity extends AppCompatActivity {
         btnToggleConfirmPassword  = signupView.findViewById(R.id.btnToggleConfirmPassword);
         rlConfirm = signupView.findViewById(R.id.rlConfirm);
         SignUpFragment = manager.findFragmentById(R.id.fragSignup);
+
+        itemsDB = new ItemsDB(this);
+    }
+
+    private void togglePasswordVisibility(EditText editText) {
+        int selection = editText.getSelectionEnd();
+        int inputType = editText.getInputType();
+
+        if ((inputType & InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        } else {
+            editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        }
+        editText.setSelection(selection);
+    }
+
+    private void saveLoginState(String username) {
+        // First, retrieve the user ID corresponding to the username from the database
+        itemsDB.open();
+        int userId = itemsDB.getUserIdByUsername(username);
+        itemsDB.close();
+
+        // Now, save the user ID in shared preferences
+        SharedPreferences.Editor editor = sPref.edit();
+        editor.putBoolean("isLoggedIn", true);
+        editor.putInt("userId", userId);
+        editor.putString("username", username);
+        editor.apply();
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(MainActivity.this, Home.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private boolean validateLogin(String username, String password) {
+        itemsDB.open();
+        int userId = itemsDB.loginUser(username, password);
+        itemsDB.close();
+        return userId != -1;
+    }
+
+    private void registerUser(String username, String password) {
+        itemsDB.open();
+        itemsDB.registerUser(username, password);
+        itemsDB.close();
     }
 }

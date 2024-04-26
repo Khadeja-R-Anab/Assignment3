@@ -27,7 +27,6 @@
                 android:text="@string/username"
                 android:id="@+id/tvUsername"
                 android:textSize="17sp"
-                android:textStyle="bold"
                 android:textColor="@color/white"
 
                 />

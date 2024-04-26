@@ -1,5 +1,6 @@
 package com.example.assignment3;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -7,13 +8,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.assignment3.ItemsDB;
-import com.example.assignment3.R;
-
 public class AddInfo extends AppCompatActivity {
 
     TextView tvAdd, tvCancel;
     EditText etUsername, etPassword, etUrl;
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +20,11 @@ public class AddInfo extends AppCompatActivity {
         setContentView(R.layout.activity_add_info);
         init();
 
-        tvCancel.setOnClickListener(view -> {
-            finish();
-        });
+        SharedPreferences sPref = getSharedPreferences("Login", MODE_PRIVATE);
+        userId = sPref.getInt("userId", -1); // Assuming user ID is stored as an integer
+
+
+        tvCancel.setOnClickListener(view -> finish());
 
         tvAdd.setOnClickListener(view -> {
             // Get the text from EditText fields
@@ -38,7 +39,7 @@ public class AddInfo extends AppCompatActivity {
                 // Insert data into the database
                 ItemsDB itemsDB = new ItemsDB(this);
                 itemsDB.open();
-                itemsDB.insert(username, password, url);
+                itemsDB.insert(userId, username, password, url);
                 itemsDB.close();
 
                 // Notify the database of the change

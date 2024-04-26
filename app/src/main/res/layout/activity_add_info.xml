@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:text="Add"
+            android:text="@string/add"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:padding="15dp"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:backgroundTint="#00FFFFFF"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:padding="15dp"
             android:textColor="@color/white"
             android:id="@+id/tvCancel"/>
@@ -71,7 +71,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Item Information"
+                android:text="@string/item_information"
                 android:textSize="25sp"
                 android:textColor="@color/blue"
                 android:textStyle="bold"
@@ -80,31 +80,34 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="UserName"
+                android:hint="@string/username"
                 android:textColorHint="#939393"
                 android:layout_margin="5dp"
                 android:paddingVertical="20dp"
-                android:id="@+id/etUsername"/>
+                android:id="@+id/etUsername"
+                android:textColor="@color/white"/>
 
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:textColorHint="#939393"
                 android:layout_margin="5dp"
                 android:paddingVertical="20dp"
-                android:id="@+id/etPassword"/>
+                android:id="@+id/etPassword"
+                android:textColor="@color/white"/>
 
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="URL"
+                android:hint="@string/url"
                 android:textColorHint="#939393"
                 android:layout_margin="5dp"
                 android:paddingVertical="20dp"
-                android:id="@+id/etUrl"/>
+                android:id="@+id/etUrl"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </LinearLayout>

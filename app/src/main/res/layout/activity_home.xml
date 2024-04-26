@@ -249,7 +249,7 @@
                         android:textSize="25sp"
                         android:gravity="center"
                         android:textColor="@color/hint_color"
-                        android:id="@id/tvItemCount"/>
+                        android:id="@+id/tvNoFolderCount"/>
                 </LinearLayout>
 
                 <LinearLayout

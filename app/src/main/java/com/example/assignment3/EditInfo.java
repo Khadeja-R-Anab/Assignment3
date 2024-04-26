@@ -1,8 +1,8 @@
 package com.example.assignment3;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +13,7 @@ public class EditInfo extends AppCompatActivity {
 
     EditText etNewUsername, etNewPassword, etNewUrl;
     TextView btnDelete, btnSave;
-    int itemId;
+    int itemId, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,10 @@ public class EditInfo extends AppCompatActivity {
         setContentView(R.layout.activity_edit_info);
 
         init();
+
+        SharedPreferences sPref = getSharedPreferences("Login", MODE_PRIVATE);
+        userId = sPref.getInt("userId", -1); // Assuming user ID is stored as an integer
+
 
         itemId = getIntent().getIntExtra("itemID", -1);
         Toast.makeText(this, itemId+"", Toast.LENGTH_SHORT).show();
@@ -31,20 +35,16 @@ public class EditInfo extends AppCompatActivity {
             loadItemData();
         }
 
-        btnDelete.setOnClickListener(view -> {
-            deleteItem();
-        });
+        btnDelete.setOnClickListener(view -> deleteItem());
 
-        btnSave.setOnClickListener(view -> {
-            updateItem();
-        });
+        btnSave.setOnClickListener(view -> updateItem());
     }
 
 
     private void loadItemData() {
         ItemsDB itemsDB = new ItemsDB(this);
         itemsDB.open();
-        DataItem item = itemsDB.getItemById(itemId);
+        DataItem item = itemsDB.getItemById(userId, itemId);
         itemsDB.close();
 
         if (item != null) {
@@ -64,7 +64,7 @@ public class EditInfo extends AppCompatActivity {
         deleteDialog.setPositiveButton("Confirm", (dialog, which) -> {
             ItemsDB itemsDB = new ItemsDB(this);
             itemsDB.open();
-            itemsDB.deleteItem(itemId);
+            itemsDB.deleteItem(userId, itemId);
             itemsDB.close();
             Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show();
             finish();
@@ -88,7 +88,7 @@ public class EditInfo extends AppCompatActivity {
 
         ItemsDB itemsDB = new ItemsDB(this);
         itemsDB.open();
-        itemsDB.updateItem(itemId, newUsername, newPassword, newUrl);
+        itemsDB.updateItem(userId, itemId, newUsername, newPassword, newUrl);
         itemsDB.close();
         Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
         finish();

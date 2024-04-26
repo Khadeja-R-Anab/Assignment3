@@ -1,13 +1,12 @@
 package com.example.assignment3;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,16 +33,19 @@ public class DeletedItemAdapter extends ArrayAdapter<DataItem> {
         }
 
         TextView tvUsername, tvPassword, tvUrl;
+        ImageView ivEdit;
 
         tvUsername = v.findViewById(R.id.tvUsername);
         tvPassword = v.findViewById(R.id.tvPassword);
         tvUrl = v.findViewById(R.id.tvUrl);
+        ivEdit = v.findViewById(R.id.ivEdit);
 
         DataItem i = getItem(position);
         assert i != null;
         tvUsername.setText(i.getUsername());
         tvPassword.setText(i.getPassword());
         tvUrl.setText(i.getUrl());
+        ivEdit.setVisibility(View.GONE);
 
         return v;
     }

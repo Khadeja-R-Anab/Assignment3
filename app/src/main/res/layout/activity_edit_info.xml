@@ -71,7 +71,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Item Information"
+                android:text="@string/item_information"
                 android:textSize="25sp"
                 android:textColor="#03A9F4"
                 android:textStyle="bold"
@@ -84,7 +84,8 @@
                 android:textColorHint="@color/hint_color"
                 android:layout_margin="5dp"
                 android:paddingVertical="20dp"
-                android:id="@+id/etNewUsername"/>
+                android:id="@+id/etNewUsername"
+                android:textColor="@color/white"/>
 
 
             <EditText
@@ -94,7 +95,8 @@
                 android:textColorHint="@color/hint_color"
                 android:layout_margin="5dp"
                 android:paddingVertical="20dp"
-                android:id="@+id/etNewPassword"/>
+                android:id="@+id/etNewPassword"
+                android:textColor="@color/white"/>
 
 
             <EditText
@@ -104,7 +106,8 @@
                 android:textColorHint="@color/hint_color"
                 android:layout_margin="5dp"
                 android:paddingVertical="20dp"
-                android:id="@+id/etNewUrl"/>
+                android:id="@+id/etNewUrl"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </LinearLayout>
