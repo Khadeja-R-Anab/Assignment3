@@ -39,6 +39,20 @@ public class ItemsDB {
         sqLiteDatabase = helper.getWritableDatabase();
     }
 
+    public DataItem getItemById(int id) {
+        Cursor cursor = sqLiteDatabase.query(DATABASE_TABLE, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        DataItem item = null;
+        if (cursor.moveToFirst()) {
+            @SuppressLint("Range") String username = cursor.getString(cursor.getColumnIndex(KEY_USERNAME));
+            @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex(KEY_PASSWORD));
+            @SuppressLint("Range") String url = cursor.getString(cursor.getColumnIndex(KEY_URL));
+
+            item = new DataItem(id, username, password, url);
+        }
+        cursor.close();
+        return item;
+    }
+
     public void insert(String name, String password, String url)
     {
         ContentValues cv = new ContentValues();
@@ -83,7 +97,7 @@ public class ItemsDB {
     }
 
     public ArrayList<DataItem> getDeletedItems() {
-        Cursor c =  sqLiteDatabase.rawQuery("SELECT * FROM " + DELETED_ITEMS_TABLE, null);
+        Cursor c =  sqLiteDatabase.rawQuery("SELECT * FROM Deleted_Items_Table", null);
         ArrayList<DataItem> items = new ArrayList<>();
         int id_index = c.getColumnIndex(KEY_ID);
         int id_username = c.getColumnIndex(KEY_USERNAME);
@@ -165,11 +179,14 @@ public class ItemsDB {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE "+DATABASE_TABLE+"("+KEY_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+KEY_USERNAME+" TEXT NOT NULL, "+KEY_PASSWORD+" TEXT NOT NULL, "+KEY_URL+" TEXT NOT NULL);");
+            db.execSQL("CREATE TABLE Deleted_Items_Table(_id INTEGER PRIMARY KEY AUTOINCREMENT, _username TEXT NOT NULL, _password TEXT NOT NULL, _url TEXT NOT NULL);");
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS Deleted_Items_Table");
+
             onCreate(db);
         }
     }

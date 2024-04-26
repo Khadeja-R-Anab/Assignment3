@@ -34,7 +34,8 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:padding="15dp"
-            android:background="#FF1100"/>
+            android:background="#FF1100"
+            android:id="@+id/btnDelete"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +43,8 @@
             android:backgroundTint="#00FFFFFF"
             android:text="@string/save"
             android:padding="15dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:id="@+id/btnSave"/>
         <ImageButton
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -78,28 +80,31 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="@string/username"
                 android:textColorHint="@color/hint_color"
                 android:layout_margin="5dp"
-                android:paddingVertical="20dp"/>
+                android:paddingVertical="20dp"
+                android:id="@+id/etNewUsername"/>
 
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
+                android:hint="@string/password"
                 android:textColorHint="@color/hint_color"
                 android:layout_margin="5dp"
-                android:paddingVertical="20dp"/>
+                android:paddingVertical="20dp"
+                android:id="@+id/etNewPassword"/>
 
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/url"
                 android:textColorHint="@color/hint_color"
                 android:layout_margin="5dp"
-                android:paddingVertical="20dp"/>
+                android:paddingVertical="20dp"
+                android:id="@+id/etNewUrl"/>
         </LinearLayout>
 
     </LinearLayout>

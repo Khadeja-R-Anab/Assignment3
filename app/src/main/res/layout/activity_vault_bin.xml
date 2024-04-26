@@ -65,19 +65,20 @@
         android:orientation="vertical"
         android:background="#2C2C2C">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="25sp"
-                android:textColor="@color/white"
-                android:text="@string/there_are_no_items_in_the_bin"
-                android:gravity="center"/>
-<!--                android:visibility="gone"/>-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:text="@string/there_are_no_items_in_the_bin"
+            android:gravity="center"
+            android:id="@+id/tvNoItems"
+            />
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@android:id/list"/>
+            android:id="@+id/lvDeletedList"/>
 
     </LinearLayout>
 

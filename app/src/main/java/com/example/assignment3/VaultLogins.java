@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.content.Context;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,19 +31,17 @@ public class VaultLogins extends AppCompatActivity {
     ImageButton btnBack;
     FloatingActionButton fabAdd;
     ListView listView;
-    ArrayAdapter<DataItem> adapter;
+    ItemAdapter adapter;
     ItemsDB itemsDB;
+    ArrayList<DataItem> dataItems;
+    TextView tvItemCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vault_logins);
         init();
-
-        itemsDB.open();
-
-        ArrayList<DataItem> items = itemsDB.readAllItems();
-        adapter = new ArrayAdapter<>(this, R.layout.data_item, items);
-        listView.setAdapter(adapter);
+        loadData();
 
         btnBack.setOnClickListener(view -> {
             Intent intent = new Intent(VaultLogins.this, Home.class);
@@ -50,25 +49,36 @@ public class VaultLogins extends AppCompatActivity {
             finish();
         });
 
-
         fabAdd.setOnClickListener(view -> {
             Intent intent = new Intent(VaultLogins.this, AddInfo.class);
             startActivity(intent);
         });
-
-
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Close the database connection when the activity is destroyed
-        itemsDB.close();
+
+    protected void onResume() {
+        super.onResume();
+        loadData(); // Call your method to reload data here
     }
+
     private void init()
     {
         btnBack = findViewById(R.id.btnBack);
         fabAdd = findViewById(R.id.fabAdd);
         itemsDB = new ItemsDB(this);
         listView = findViewById(R.id.listView);
+        dataItems = new ArrayList<>();
+        adapter = new ItemAdapter(this, dataItems);
+        listView.setAdapter(adapter);
+        tvItemCount = findViewById(R.id.tvItemCount);
+    }
+
+    private void loadData() {
+        ItemsDB itemsDB = new ItemsDB(this);
+        itemsDB.open();
+        dataItems.clear();
+        dataItems.addAll(itemsDB.readAllItems());
+        itemsDB.close();
+        adapter.notifyDataSetChanged();
+        tvItemCount.setText(dataItems.size()+"");
     }
 }

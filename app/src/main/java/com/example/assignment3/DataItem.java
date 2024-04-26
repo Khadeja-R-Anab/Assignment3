@@ -24,8 +24,8 @@ public class DataItem {
         this.id = id;
     }
 
-    public int getUsername() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
     public void setUsername(String username) {
@@ -47,5 +47,6 @@ public class DataItem {
     public void setUrl(String url) {
         this.url = url;
     }
+
 
 }

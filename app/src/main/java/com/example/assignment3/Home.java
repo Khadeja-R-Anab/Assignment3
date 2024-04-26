@@ -26,6 +26,8 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         init();
+        ItemsDB itemsDB = new ItemsDB(this);
+        itemsDB.open();
 
         SharedPreferences sPref = getSharedPreferences("Login", MODE_PRIVATE);
         sPref.getBoolean("isLogin", true);
