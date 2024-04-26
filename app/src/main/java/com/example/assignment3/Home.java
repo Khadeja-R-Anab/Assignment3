@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,10 +21,10 @@ public class Home extends AppCompatActivity {
 
     LinearLayout llLogin, llBin;
     FloatingActionButton fabAdd;
-    TextView tvItemCount, tvBinCount, tvNoFolderCount, tvUserName;
+    TextView tvItemCount, tvBinCount, tvNoFolderCount, tvUserName, tvTooltipText;
     ArrayList<DataItem> dataItems, deletedItems;
     int userId; // Add user ID variable
-    private boolean isAppClosed = false;
+    private boolean isAppInBackground = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,20 @@ public class Home extends AppCompatActivity {
         if (username != null) {
             String firstLetter = username.substring(0, 1);
             tvUserName.setText(firstLetter.toUpperCase());
+        }
+
+        if (!sPref.getBoolean("tooltip",false)){
+            new Handler().postDelayed(() -> {
+                // This code will run after the specified duration
+                tvTooltipText.setVisibility(View.GONE);
+            }, 2000); // Duration in milliseconds (2000ms = 2s)
+
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putBoolean("tooltip", true);
+            editor.apply();
+        }
+        else{
+            tvTooltipText.setVisibility(View.GONE);
         }
 
         llLogin.setOnClickListener(view -> {
@@ -80,7 +96,7 @@ public class Home extends AppCompatActivity {
         builder.setTitle("Exit App");
         builder.setMessage("Are you sure you want to exit?");
         builder.setPositiveButton("Yes", (dialog, which) -> {
-            isAppClosed = true; // Mark the app as closed
+            isAppInBackground = true; // Mark the app as closed
             finish();
         });
         builder.setNegativeButton("No", (dialog, which) -> {
@@ -92,22 +108,18 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        // Check if the app is going into the background
-        if (!isChangingConfigurations() && !isFinishing()) {
-            isAppClosed = true; // Mark the app as closed
-        }
+        // App is going to background
+        isAppInBackground = true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // Check if the app is closed
-        if (isAppClosed) {
-            // Delete shared preferences when the app is closed
-            SharedPreferences.Editor editor = getSharedPreferences("Login", MODE_PRIVATE).edit();
-            editor.clear(); // Clear all the shared preferences data
+        // Check if the app is in the background
+        if (isAppInBackground) {
+            // Clear SharedPreferences
+            SharedPreferences.Editor editor = getSharedPreferences("YourPrefsName", MODE_PRIVATE).edit();
+            editor.clear();
             editor.apply();
         }
     }
@@ -127,6 +139,7 @@ public class Home extends AppCompatActivity {
         tvBinCount = findViewById(R.id.tvBinCount);
         tvNoFolderCount = findViewById(R.id.tvNoFolderCount);
         tvUserName = findViewById(R.id.tvUserName);
+        tvTooltipText = findViewById(R.id.tvTooltipText);
     }
     @SuppressLint("SetTextI18n")
     private void loadData() {

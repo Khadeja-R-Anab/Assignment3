@@ -49,7 +49,7 @@ public class ItemAdapter extends ArrayAdapter<DataItem> {
             Intent intent = new Intent(context, EditInfo.class);
             DataItem item = getItem(position);
             assert item != null;
-            Toast.makeText(context, item.getId()+"", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, item.getId()+"", Toast.LENGTH_SHORT).show();
             intent.putExtra("itemID", item.getId());
             context.startActivity(intent);
         });

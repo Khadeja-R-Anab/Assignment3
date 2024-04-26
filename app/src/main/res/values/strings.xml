@@ -44,4 +44,5 @@
     <string name="item_information">Item Information</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="click_to_log_out">Click to Log Out</string>
 </resources>

@@ -47,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
         itemsDB = new ItemsDB(this);
         sPref = getSharedPreferences("Login", MODE_PRIVATE);
 
-        boolean isLoggedIn = sPref.getBoolean("isLoggedIn", false);
-        if(isLoggedIn) {
-            startHomeActivity();
-            return;
-        }
+//        boolean isLoggedIn = sPref.getBoolean("isLoggedIn", false);
+//        if(isLoggedIn) {
+//            startHomeActivity();
+//            return;
+//        }
 
         // Login button click listener
         btnLogin.setOnClickListener(view -> {
@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("isLoggedIn", true);
         editor.putInt("userId", userId);
         editor.putString("username", username);
+        editor.putBoolean("tooltip", false);
         editor.apply();
     }
 
